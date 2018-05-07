@@ -1,4 +1,4 @@
-class Event:
+class State:
 
     def __init__(self, actions, actor_rewards, actor_beliefs, receiver_rewards):
         self.actions = actions

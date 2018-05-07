@@ -14,35 +14,28 @@ library("tidyverse")
 
 ### Models
 
-Here we developed three comptutational models that make judgments of niceness.
+Here we developed three computational models that make judgments of niceness:
 
-- A sacrifice model that judges niceness based purely on 'how much' someone gives, independent of what's given
-- A utility model that judges niceness based on how much someone gives of a thing that is valued by the recipient
-- A theory of mind model that judges niceness based on beliefs (what an actor thinks the recipient values), desires (what the actor values), and actions (what action the actor takes)
+- A *sacrifice model* that judges niceness based purely on 'how much' someone gives, independent of what's given
+- A *utilitarian model* that judges niceness based on how much someone gives of a thing that is valued by the recipient
+- A *Theory of Mind model* that judges niceness based on beliefs (what an actor thinks the receiver values), desires (what the actor values), and actions (what action the actor takes)
 
-
-```{r models}
-# models can be found in niceness.py on GitHub 
-```
+These models can be found in the "models" folder in our GitHub repository: https://github.com/carlsonrw/niceness.
 
 ### Prosocial scenarios
 
 Here we test these models ability to handle four common prosocial actions:
 
 1. An obvious good deed: When an actor gives a gift that both the actor and recipient value
-  Example: when your friend gifts you a really nice scarf that they also like
+  - Example: when your friend gifts you a really nice scarf that they also like
 2. An empty good deed: When an actor gives a gift that they know the recipient does not really value
-  Example: gifting a smelly sock as a joke at a Secret Santa
+  - Example: gifting a smelly sock as a joke at a Secret Santa
 3. A 'well-intended' good deed : When an actor gives a gift that they believe the recipient values, but in fact does not
-  Example: gifting a winter jacket to someone who is about to move to California
+  - Example: gifting a winter jacket to someone who is about to move to California
 4. A 'convenient' good deed: When an actor gifts something that they do not value themselves, but believe the recipient values.
-  Example: gifting a book when you happen to own two copies
+  - Example: gifting a book when you happen to own two copies
   
 Importantly, while these scenarios focus on gift giving, the themes of these four prosocial scenarios (empty, well-intended, and empty acts of kindness) extend across to a broad variety of prosocial domains such as donating, volunteering, offering emotional support, and cooperating in complex tasks.
-
-```{r scenarios}
-# scenarios were tested in niceness.py on GitHub
-```
 
 ### Predictions
 

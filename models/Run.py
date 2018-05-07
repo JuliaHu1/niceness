@@ -1,57 +1,57 @@
-from utils import *
-
 from Actor import *
-from Event import *
 from Observer import *
+from State import *
 
 import itertools as it
+import numpy as np
 import sys
 
-
-# Generate the action space.
-actions = list(it.combinations_with_replacement(OPTIONS, r=MAX_OPTIONS))
+# Parameterize the action space.
+options = ["A", "B"]
+max_options = int(sys.argv[1])
+actions = list(it.combinations_with_replacement(options, r=max_options))
 for a in range(len(actions)):
     actions[a] = [option for option in actions[a] if option != ""]
 
-ar = {"a": 9, "b": 2}
-ab = {"a": 9, "b": 3}
-rr = {"a": 4, "b": 8}
-actor_rewards, actor_beliefs, receiver_rewards = [], [], []
+# Set the value of each option for the actor's rewards and beliefs and the
+# receiver's rewards.
+actor_reward_values = {"A": 2, "B": 9}
+actor_belief_values = {"A": 3, "B": 9}
+receiver_reward_values = {"A": 4, "B": 8}
+
+# Generate actor rewards, actor beliefs, and receiver rewards by mapping the
+# action space using the corresponding option values.
+actor_rewards = []
+actor_beliefs = []
+receiver_rewards = []
 for action in actions:
-	actor_rewards.append([ar[option] for option in action if action != []])
-	actor_beliefs.append([ab[option] for option in action if action != []])
-	receiver_rewards.append([rr[option] for option in action if action != []])
+	actor_rewards.append([actor_reward_values[option] for option in action if action != []])
+	actor_beliefs.append([actor_belief_values[option] for option in action if action != []])
+	receiver_rewards.append([receiver_reward_values[option] for option in action if action != []])
 
-# actor_rewards[0] = 0
+# Convert to numpy arrays.
+actions = np.array(actions)
+actor_rewards = np.array(actor_rewards)
+actor_beliefs = np.array(actor_beliefs)
+receiver_rewards = np.array(receiver_rewards)
 
-print(actor_rewards)
-print(actor_beliefs)
-print(receiver_rewards)
-
-event = Event(actions=np.array(actions), actor_rewards=np.array(actor_rewards), actor_beliefs=np.array(actor_beliefs), 
-			  receiver_rewards=np.array(receiver_rewards))
+# Instantiate a state, actor, and observer.
+state = State(actions=actions, actor_rewards=actor_rewards, actor_beliefs=actor_beliefs, receiver_rewards=receiver_rewards)
 actor = Actor()
-observer = Observer(event, actor)
-print("Actions:", actions)
+observer = Observer(state, actor)
+
+print("Actions:")
+print(actions)
 index = 0
 action = actions[index]
+print("Action:")
+print(action)
 
-print("Action:", action)
-# print(actions == action)
+# Run the sacrifice model.
+print(observer.sacrifice(action))
 
+# Run the utilitarian model.
+print(observer.utilitarian(action, receiver_reward_values))
+
+# Run the ToM model.
 print(observer.ToM(index))
-sys.exit("Done.")
-
-MyEvent = Event(options=[0,1],agentvalue=[2.5,2],agentbeliefs=[9,3],recipientrewards=[4,8])
-MyAgent = Agent()
-# Create an observer with an event and a mental model of the agent
-MyObserver = Observer(MyEvent, MyAgent)
-print(MyObserver.ToM(1)) # Infers that agent really cares about own utilities and not about others
-# MyObserver.ToM(0) # Uncertain.
-
-# Same as above, but now make agent value option 0 a lot
-MyEvent = Event(options=[0,1],agentvalue=[10,2],agentbeliefs=[9,3],recipientrewards=[4,8])
-MyAgent = Agent()
-MyObserver = Observer(MyEvent, MyAgent)
-# MyObserver.ToM(1) # In contrast to above, now less certain that agent is selfish (because option 0 is very valuable)
-# MyObserver.ToM(0) # Should infer low selfishness and high altruism
